@@ -1,4 +1,6 @@
 {
+  "name": "mes:endscraps_start_pool",
+
   "fallback": "minecraft:empty",
 
   "elements": [

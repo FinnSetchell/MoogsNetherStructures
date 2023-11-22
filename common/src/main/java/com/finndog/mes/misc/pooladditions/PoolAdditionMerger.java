@@ -15,14 +15,11 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.JsonOps;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.RegistryOps;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
-import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.level.levelgen.structure.pools.ListPoolElement;
 import net.minecraft.world.level.levelgen.structure.pools.SinglePoolElement;
 import net.minecraft.world.level.levelgen.structure.pools.StructurePoolElement;
@@ -34,6 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 public final class PoolAdditionMerger {
@@ -58,7 +56,7 @@ public final class PoolAdditionMerger {
      * Afterwards, it will merge the parsed pool into the targeted pool found in the dynamic registry.
      */
     private static void parsePoolsAndBeginMerger(Map<ResourceLocation, List<JsonElement>> poolAdditionJSON, RegistryAccess dynamicRegistryManager, StructureTemplateManager StructureTemplateManager) {
-        Registry<StructureTemplatePool> poolRegistry = dynamicRegistryManager.registryOrThrow(Registries.TEMPLATE_POOL);
+        Registry<StructureTemplatePool> poolRegistry = dynamicRegistryManager.registryOrThrow(Registry.TEMPLATE_POOL_REGISTRY);
         RegistryOps<JsonElement> customRegistryOps = RegistryOps.create(JsonOps.INSTANCE, dynamicRegistryManager);
 
         // Will iterate over all of our found pool additions and make sure the target pool exists before we parse our JSON objects
@@ -124,12 +122,12 @@ public final class PoolAdditionMerger {
         try {
             InputStream inputstream = ((StructureTemplateManagerAccessor) structureTemplateManager).mes_getResourceManager().open(resourcelocation);
             if (inputstream.available() == 0 || inputstream.read(new byte[1]) == -1) {
-                MESCommon.LOGGER.error("(Moog's End Structures POOL MERGER) Found an entry in {} that points to the non-existent nbt file called {}", feedingPool.name, pieceRL);
+                MESCommon.LOGGER.error("(Moog's End Structures POOL MERGER) Found an entry in {} that points to the non-existent nbt file called {}", feedingPool.getName(), pieceRL);
             }
             inputstream.close();
         }
         catch (Throwable filenotfoundexception) {
-            MESCommon.LOGGER.error("(Moog's End Structures POOL MERGER) Found an entry in {} that points to the non-existent nbt file called {}", feedingPool.name, pieceRL);
+            MESCommon.LOGGER.error("(Moog's End Structures POOL MERGER) Found an entry in {} that points to the non-existent nbt file called {}", feedingPool.getName(), pieceRL);
         }
     }
 
@@ -139,8 +137,6 @@ public final class PoolAdditionMerger {
     private static void logBadData(ResourceLocation poolPath, String messageString) {
         MESCommon.LOGGER.error("(Moog's End Structures POOL MERGER) Failed to parse {} additions file. Error is: {}", poolPath, messageString);
     }
-
-
     private static class AdditionalStructureTemplatePool extends StructureTemplatePool {
         private static final Codec<ExpandedPoolEntry> EXPANDED_POOL_ENTRY_CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 StructurePoolElement.CODEC.fieldOf("element").forGetter(ExpandedPoolEntry::poolElement),
@@ -150,19 +146,18 @@ public final class PoolAdditionMerger {
 
         public static final Codec<AdditionalStructureTemplatePool> DIRECT_CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 ResourceLocation.CODEC.fieldOf("name").forGetter(structureTemplatePool -> structureTemplatePool.name),
-                ExtraCodecs.lazyInitializedCodec(StructurePoolAccessor.getCODEC_REFERENCE()::getValue).fieldOf("fallback").forGetter(StructureTemplatePool::getFallback),
+                ResourceLocation.CODEC.fieldOf("fallback").forGetter(StructureTemplatePool::getFallback),
                 EXPANDED_POOL_ENTRY_CODEC.listOf().fieldOf("elements").forGetter(structureTemplatePool -> structureTemplatePool.rawTemplatesWithConditions)
         ).apply(instance, AdditionalStructureTemplatePool::new));
 
         protected final List<ExpandedPoolEntry> rawTemplatesWithConditions;
         protected final ResourceLocation name;
 
-        public AdditionalStructureTemplatePool(ResourceLocation name, Holder<StructureTemplatePool> fallback, List<ExpandedPoolEntry> rawTemplatesWithConditions) {
-            super(fallback, rawTemplatesWithConditions.stream().map(triple -> Pair.of(triple.poolElement(), triple.weight())).collect(Collectors.toList()));
+        public AdditionalStructureTemplatePool(ResourceLocation name, ResourceLocation fallback, List<ExpandedPoolEntry> rawTemplatesWithConditions) {
+            super(name, fallback, rawTemplatesWithConditions.stream().map(triple -> Pair.of(triple.poolElement(), triple.weight())).collect(Collectors.toList()));
             this.rawTemplatesWithConditions = rawTemplatesWithConditions;
             this.name = name;
         }
-
         public record ExpandedPoolEntry(StructurePoolElement poolElement, Integer weight, Optional<ResourceLocation> condition) {}
     }
 }
