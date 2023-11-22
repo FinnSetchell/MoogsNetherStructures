@@ -1,6 +1,4 @@
 {
-  "name": "mes:ruined_pillar_start_pool",
-
   "fallback": "minecraft:empty",
 
   "elements": [

@@ -15,6 +15,10 @@ import java.util.List;
 
 @Mixin(StructureTemplatePool.class)
 public interface StructurePoolAccessor {
+    @Accessor("CODEC_REFERENCE")
+    static MutableObject<Codec<Holder<StructureTemplatePool>>> getCODEC_REFERENCE() {
+        throw new UnsupportedOperationException();
+    }
 
     @Accessor("rawTemplates")
     List<Pair<StructurePoolElement, Integer>> mes_getRawTemplates();

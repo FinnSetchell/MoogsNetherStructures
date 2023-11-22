@@ -1,6 +1,4 @@
 {
-  "name": "mes:astral_meteorite_start_pool",
-
   "fallback": "minecraft:empty",
 
   "elements": [

@@ -1,6 +1,4 @@
 {
-  "name": "mes:enderpin_spikes_start_pool",
-
   "fallback": "minecraft:empty",
 
   "elements": [

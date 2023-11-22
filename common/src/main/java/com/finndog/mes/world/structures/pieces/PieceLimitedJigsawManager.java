@@ -14,7 +14,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.QuartPos;
 import net.minecraft.core.Registry;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.Pools;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
@@ -75,7 +75,7 @@ public class PieceLimitedJigsawManager {
             BiConsumer<StructurePiecesBuilder, List<PoolElementStructurePiece>> structureBoundsAdjuster
     ) {
         // Get jigsaw pool registry
-        Registry<StructureTemplatePool> jigsawPoolRegistry = context.registryAccess().registryOrThrow(Registry.TEMPLATE_POOL_REGISTRY);
+        Registry<StructureTemplatePool> jigsawPoolRegistry = context.registryAccess().registryOrThrow(Registries.TEMPLATE_POOL);
 
         // Get a random orientation for the starting piece
         WorldgenRandom random = new WorldgenRandom(new LegacyRandomSource(0L));
@@ -290,7 +290,7 @@ public class PieceLimitedJigsawManager {
                 }
 
                 // Get the jigsaw block's fallback pool (which is a part of the pool's JSON)
-                ResourceLocation fallBackPoolRL = poolOptional.get().getFallback();
+                Holder<StructureTemplatePool> jigsawBlockFallback = poolOptional.get().getFallback();
 
                 // Adjustments for if the target block position is inside the current piece
                 boolean isTargetInsideCurrentPiece = pieceBoundingBox.isInside(jigsawBlockTargetPos);
@@ -315,13 +315,13 @@ public class PieceLimitedJigsawManager {
                 }
 
                 // Process the fallback pieces in the event none of the pool pieces work
-                StructureTemplatePool jigsawBlockFallback = poolRegistry.get(fallBackPoolRL);
-
                 boolean ignoreBounds = false;
                 if(poolsThatIgnoreBounds != null) {
+                    ResourceLocation fallBackPoolRL = poolRegistry.getKey(jigsawBlockFallback.value());
                     ignoreBounds = poolsThatIgnoreBounds.contains(fallBackPoolRL);
                 }
-                this.processList(new ArrayList<>(((StructurePoolAccessor)jigsawBlockFallback).mes_getRawTemplates()), doBoundaryAdjustments, jigsawBlock, jigsawBlockTargetPos, pieceMinY, jigsawBlockPos, octreeToUse, piece, depth, targetPieceBoundsTop, heightLimitView, ignoreBounds);            }
+                this.processList(new ArrayList<>(((StructurePoolAccessor)jigsawBlockFallback.value()).mes_getRawTemplates()), doBoundaryAdjustments, jigsawBlock, jigsawBlockTargetPos, pieceMinY, jigsawBlockPos, octreeToUse, piece, depth, targetPieceBoundsTop, heightLimitView, ignoreBounds);
+            }
         }
 
         /**
@@ -437,7 +437,7 @@ public class PieceLimitedJigsawManager {
                                 if (candidateTargetPoolOptional.isEmpty()) {
                                     MESCommon.LOGGER.warn("Moog's End Structures: Non-existent child pool attempted to be spawned: {} which is being called from {}. Let Moog's Voyager Structures dev (FinnDog) know about this log entry.", candidateTargetPool, candidatePiece instanceof SinglePoolElement ? ((SinglePoolElementAccessor) candidatePiece).mes_getTemplate().left().get() : "not a SinglePoolElement class");
                                 }
-                                int tallestCandidateTargetFallbackPieceHeight = candidateTargetPoolOptional.map((c) -> this.poolRegistry.get(c.getFallback()).getMaxSize(context.structureTemplateManager())).orElse(0);
+                                int tallestCandidateTargetFallbackPieceHeight = candidateTargetPoolOptional.map((c) -> c.getFallback().value().getMaxSize(context.structureTemplateManager())).orElse(0);
                                 int tallestCandidateTargetPoolPieceHeight = candidateTargetPoolOptional.map((c) -> c.getMaxSize(context.structureTemplateManager())).orElse(0);
                                 return Math.max(tallestCandidateTargetPoolPieceHeight, tallestCandidateTargetFallbackPieceHeight);
                             }

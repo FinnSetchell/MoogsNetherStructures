@@ -1,6 +1,4 @@
 {
-  "name": "mes:enderbloom_grove_start_pool",
-
   "fallback": "minecraft:empty",
 
   "elements": [

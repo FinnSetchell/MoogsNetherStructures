@@ -14,7 +14,7 @@ import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.QuartPos;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.level.ChunkPos;
@@ -126,6 +126,10 @@ public class GenericJigsawStructure extends Structure {
     protected boolean extraSpawningChecks(GenerationContext context, BlockPos blockPos) {
         ChunkPos chunkPos = context.chunkPos();
 
+        if (chunkPos.x < 60 || chunkPos.z < 60) {
+            return false;
+        }
+
         if (this.biomeRadius.isPresent() && !(context.biomeSource() instanceof CheckerboardColumnBiomeSource)) {
             int validBiomeRange = this.biomeRadius.get();
             int sectionY = blockPos.getY();
@@ -218,7 +222,7 @@ public class GenericJigsawStructure extends Structure {
                 context,
                 this.startPool,
                 this.size,
-                context.registryAccess().registryOrThrow(Registry.STRUCTURE_REGISTRY).getKey(this),
+                context.registryAccess().registryOrThrow(Registries.STRUCTURE).getKey(this),
                 blockpos,
                 this.useBoundingBoxHack,
                 this.projectStartToHeightmap,

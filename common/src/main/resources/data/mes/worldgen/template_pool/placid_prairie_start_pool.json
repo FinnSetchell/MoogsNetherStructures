@@ -1,6 +1,4 @@
 {
-  "name": "mes:placid_prairie_start_pool",
-
   "fallback": "minecraft:empty",
 
   "elements": [
