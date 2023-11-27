@@ -1,0 +1,21 @@
+{
+
+  "type": "mns:mns_generic_jigsaw_structure",
+
+  "start_pool": "mns:very_small_nether_brick_2_start_pool",
+
+  "size": 1,
+
+  "biomes": "#mns:has_structure/nether_biomes",
+  "project_start_to_heightmap": "WORLD_SURFACE_WG",
+  "terrain_height_radius_check": 1,
+  "allowed_terrain_height_range": 3,
+
+  "step": "surface_structures",
+  "terrain_adaptation": "beard_thin",
+  "start_height": {
+    "absolute": 0
+  },
+
+  "spawn_overrides": {}
+}

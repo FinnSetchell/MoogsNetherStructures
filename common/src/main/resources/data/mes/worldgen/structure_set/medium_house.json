@@ -1,0 +1,14 @@
+{
+  "structures": [
+    {
+      "structure": "mns:medium_house",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "type": "mns:advanced_random_spread",
+    "salt": 100922847,
+    "spacing": 25,
+    "separation": 15
+  }
+}

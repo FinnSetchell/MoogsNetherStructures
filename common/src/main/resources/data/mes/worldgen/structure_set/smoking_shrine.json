@@ -1,0 +1,14 @@
+{
+  "structures": [
+    {
+      "structure": "mns:smoking_shrine",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "type": "mns:advanced_random_spread",
+    "salt": 122395845,
+    "spacing": 25,
+    "separation": 15
+  }
+}

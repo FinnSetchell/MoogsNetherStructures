@@ -1,0 +1,14 @@
+{
+  "structures": [
+    {
+      "structure": "mns:large_nether_brick",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "type": "mns:advanced_random_spread",
+    "salt": 109987424,
+    "spacing": 25,
+    "separation": 15
+  }
+}
