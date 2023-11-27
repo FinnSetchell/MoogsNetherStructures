@@ -1,4 +1,4 @@
-# Moogs End Structures
+# Moogs Nether Structures
 ## Coming soon!
 
 ---

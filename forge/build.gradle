@@ -14,8 +14,8 @@ loom {
         convertAccessWideners = true
         extraAccessWideners.add loom.accessWidenerPath.get().asFile.name
 
-        mixinConfig "mes-common.mixins.json"
-        mixinConfig "mes-forge.mixins.json"
+        mixinConfig "mns-common.mixins.json"
+        mixinConfig "mns-forge.mixins.json"
     }
 }
 

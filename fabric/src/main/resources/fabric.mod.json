@@ -1,27 +1,27 @@
 {
     "schemaVersion": 1,
-    "id": "mes",
+    "id": "mns",
     "version": "${version}-fabric",
-    "name": "Moog's End Structures",
-    "description": "80+ structures made with vanilla blocks and entities bringing life to your world! Discover loot, enemies, & villagers along the way!",
+    "name": "Moog's Nether Structures",
+    "description": "30+ structures made with vanilla blocks and entities bringing life to your world! Discover loot, enemies, & villagers along the way!",
     "authors": [
         "FinnDog"
     ],
     "contact": {
-        "homepage": "https://www.curseforge.com/minecraft/mc-mods/moogs-end-structures",
-        "sources": "https://github.com/FinnSetchell/MoogsEndStructures"
+        "homepage": "https://www.curseforge.com/minecraft/mc-mods/moogs-nether-structures",
+        "sources": "https://github.com/FinnSetchell/MoogsNetherStructures"
     },
     "license": "GNU Lesser General Public License v3.0",
     "icon": "icon.png",
     "environment": "*",
     "entrypoints": {
         "main": [
-            "com.finndog.mes.fabric.MESFabric"
+            "com.finndog.mns.fabric.MNSFabric"
         ]
     },
     "mixins": [
-        "mes-fabric.mixins.json",
-        "mes-common.mixins.json"
+        "mns-fabric.mixins.json",
+        "mns-common.mixins.json"
     ],
     "depends": {
         "fabricloader": ">=0.14",
