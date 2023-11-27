@@ -31,7 +31,7 @@ Look for files marked with **\[FORGE\]** or **\[FABRIC\]**.
 
 **ABOUT**
 
-Moogs Voyager Structures brings life, fun and variety to your Minecraft world! Explore awesome new structures made with vanilla blocks and entities, and discover loot, enemies, and villagers along the way. This mod is compatible with any modpack and keeps the vanilla feel of the game!
+Moogs Voyager Structures brings life, fun and variety to your Minecraft world! Explore awesome new structures made with vanilla blocks and entities, and discover loot, and enemies along the way. This mod is compatible with any modpack and keeps the vanilla feel of the game!
 
 **Config pack**
 
