@@ -7,7 +7,7 @@
   "size": 1,
 
   "biomes": "#mns:has_structure/warped_biomes",
-  "land_search_direction": "HIGHEST_LAND",
+  "land_search_direction": "LOWEST_LAND",
   "project_start_to_heightmap": "WORLD_SURFACE_WG",
   "terrain_height_radius_check": 1,
   "allowed_terrain_height_range": 3,
