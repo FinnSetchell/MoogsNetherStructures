@@ -1,6 +1,6 @@
 {
 
-  "type": "mns:mns_generic_jigsaw_structure",
+  "type": "mns:mns_generic_nether_jigsaw_structure",
 
   "start_pool": "mns:large_nether_brick_start_pool",
 
