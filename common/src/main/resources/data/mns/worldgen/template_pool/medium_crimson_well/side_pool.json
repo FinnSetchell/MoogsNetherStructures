@@ -1,20 +1,12 @@
 {
-  "name": "mns:medium_warped_well_start_pool",
-
   "fallback": "minecraft:empty",
-
   "elements": [
     {
-
       "weight": 1,
       "element": {
-
-        "location": "mns:wells/warped_crimson_well",
-
+        "location": "mns:wells/medium_crimson_well_lower",
         "processors": "minecraft:empty",
-
         "projection": "rigid",
-
         "element_type": "minecraft:single_pool_element"
       }
     }
