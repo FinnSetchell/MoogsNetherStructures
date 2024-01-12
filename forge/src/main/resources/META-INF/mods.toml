@@ -11,7 +11,7 @@ displayName = "Moog's Nether Structures" #mandatory
 logoFile = "icon.png" #optional (needs to be in the root of your mod jar (root of your 'resources' folder))
 credits = "Thanks to my Olver, the main builder as well as TelepathicGrunt for their structure mod template and rs" #optional
 authors = "FinnDog" #optional
-description = '''80+ structures made with vanilla blocks and entities bringing life to your world!
+description = '''lots of structures made with vanilla blocks and entities bringing life to your world!
 Discover loot & enemies along the way!
 
 Join our community here: https://discord.gg/S5nffJbuvA
