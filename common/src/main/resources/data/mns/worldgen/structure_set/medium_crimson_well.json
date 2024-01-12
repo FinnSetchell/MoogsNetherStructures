@@ -1,0 +1,14 @@
+{
+  "structures": [
+    {
+      "structure": "mns:medium_crimson_well",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "type": "mns:advanced_random_spread",
+    "salt": 111008274,
+    "spacing": 22,
+    "separation": 12
+  }
+}
