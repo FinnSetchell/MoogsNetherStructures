@@ -1,4 +1,6 @@
 {
+  "name": "mns:medium_warped_well_side_pool",
+
   "fallback": "minecraft:empty",
   "elements": [
     {

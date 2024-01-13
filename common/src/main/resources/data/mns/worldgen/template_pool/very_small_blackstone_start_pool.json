@@ -1,4 +1,6 @@
 {
+  "name": "mns:very_small_blackstone_start_pool",
+
   "fallback": "minecraft:empty",
 
   "elements": [

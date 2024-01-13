@@ -1,4 +1,6 @@
 {
+  "name": "mns:medium_crimson_well_start_pool",
+
   "fallback": "minecraft:empty",
   "elements": [
     {

@@ -1,4 +1,6 @@
 {
+  "name": "mns:very_small_nether_brick_2_start_pool",
+
   "fallback": "minecraft:empty",
 
   "elements": [

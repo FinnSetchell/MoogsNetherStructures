@@ -1,4 +1,6 @@
 {
+  "name": "mns:warped_pool_start_pool",
+
   "fallback": "minecraft:empty",
   "elements": [
     {

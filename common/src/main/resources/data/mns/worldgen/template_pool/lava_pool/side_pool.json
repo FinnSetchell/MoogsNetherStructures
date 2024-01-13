@@ -1,4 +1,6 @@
 {
+  "name": "mns:lava_pool_side_pool",
+
   "fallback": "minecraft:empty",
   "elements": [
     {
