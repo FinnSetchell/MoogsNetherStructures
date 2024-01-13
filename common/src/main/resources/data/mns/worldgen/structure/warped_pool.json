@@ -2,7 +2,7 @@
 
   "type": "mns:mns_generic_nether_jigsaw_structure",
 
-  "start_pool": "mns:warped_pool_start_pool",
+  "start_pool": "mns:warped_pool/start_pool",
 
   "size": 1,
 
