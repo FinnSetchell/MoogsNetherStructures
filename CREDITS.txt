@@ -18,6 +18,3 @@ RS License: https://github.com/TelepathicGrunt/RepurposedStructures/blob/1.20-Ar
 Builders:
 A huge thanks to my past and present builders listed below: (Discord usernames)
 - .olver.
-- tfa120
-- beeb0i
-- bossminotaur
