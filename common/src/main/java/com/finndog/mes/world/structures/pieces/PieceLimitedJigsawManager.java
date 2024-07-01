@@ -435,7 +435,7 @@ public class PieceLimitedJigsawManager {
                                 ResourceLocation candidateTargetPool = new ResourceLocation(pieceCandidateJigsawBlock.nbt().getString("pool"));
                                 Optional<StructureTemplatePool> candidateTargetPoolOptional = this.poolRegistry.getOptional(candidateTargetPool);
                                 if (candidateTargetPoolOptional.isEmpty()) {
-                                    MESCommon.LOGGER.warn("Moog's End Structures: Non-existent child pool attempted to be spawned: {} which is being called from {}. Let Moog's Voyager Structures dev (FinnDog) know about this log entry.", candidateTargetPool, candidatePiece instanceof SinglePoolElement ? ((SinglePoolElementAccessor) candidatePiece).mes_getTemplate().left().get() : "not a SinglePoolElement class");
+                                    MESCommon.LOGGER.warn("Moog's End Structures: Non-existent child pool attempted to be spawned: {} which is being called from {}. Let Moog's End Structures dev (FinnDog) know about this log entry.", candidateTargetPool, candidatePiece instanceof SinglePoolElement ? ((SinglePoolElementAccessor) candidatePiece).mes_getTemplate().left().get() : "not a SinglePoolElement class");
                                 }
                                 int tallestCandidateTargetFallbackPieceHeight = candidateTargetPoolOptional.map((c) -> c.getFallback().value().getMaxSize(context.structureTemplateManager())).orElse(0);
                                 int tallestCandidateTargetPoolPieceHeight = candidateTargetPoolOptional.map((c) -> c.getMaxSize(context.structureTemplateManager())).orElse(0);

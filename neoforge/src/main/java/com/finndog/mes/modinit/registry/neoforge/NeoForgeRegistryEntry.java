@@ -1,14 +1,14 @@
-package com.finndog.mes.modinit.registry.forge;
+package com.finndog.mes.modinit.registry.neoforge;
 
 import com.finndog.mes.modinit.registry.RegistryEntry;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.neoforge.registries.DeferredHolder;
 
-public class ForgeRegistryEntry<T> implements RegistryEntry<T> {
+public class NeoForgeRegistryEntry<R, T extends R> implements RegistryEntry<T> {
 
-    private final RegistryObject<T> object;
+    private final DeferredHolder<R, T> object;
 
-    public ForgeRegistryEntry(RegistryObject<T> object) {
+    public NeoForgeRegistryEntry(DeferredHolder<R, T> object) {
         this.object = object;
     }
 

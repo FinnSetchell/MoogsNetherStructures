@@ -31,11 +31,11 @@ Look for files marked with **\[FORGE\]** or **\[FABRIC\]**.
 
 **ABOUT**
 
-Moogs Voyager Structures brings life, fun and variety to your Minecraft world! Explore awesome new structures made with vanilla blocks and entities, and discover loot, enemies, and villagers along the way. This mod is compatible with any modpack and keeps the vanilla feel of the game!
+Moogs End Structures brings life, fun and variety to your Minecraft world! Explore awesome new structures made with vanilla blocks and entities, and discover loot, enemies, and villagers along the way. This mod is compatible with any modpack and keeps the vanilla feel of the game!
 
 **Config pack**
 
-[link](https://www.curseforge.com/minecraft/texture-packs/mes-moogs-voyager-structure-config-pack)
+[link](https://www.curseforge.com/minecraft/texture-packs/mes-moogs-end-structure-config-pack)
 
 A datapack you can use to configure the mod.
 
