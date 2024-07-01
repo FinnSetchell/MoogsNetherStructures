@@ -28,4 +28,4 @@ license="https://github.com/FinnSetchell/MoogsEndStructures/blob/1.20-MultiLoade
 [[dependencies.mes]]
     modId="minecraft"
     type="required"
-    versionRange="[1.20.5,)"
+    versionRange="[1.21,)"

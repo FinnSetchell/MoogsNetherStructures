@@ -6,6 +6,7 @@ package com.finndog.mes.world.structures;
 
 import com.finndog.mes.modinit.MESStructures;
 import com.finndog.mes.utils.GeneralUtils;
+import com.finndog.mes.world.structures.codecs.YRangeAllowance;
 import com.finndog.mes.world.structures.pieces.PieceLimitedJigsawManager;
 import com.google.common.collect.Maps;
 import com.mojang.serialization.Codec;
@@ -35,6 +36,8 @@ import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructureType;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
+import net.minecraft.world.level.levelgen.structure.structures.JigsawStructure;
+import net.minecraft.world.level.levelgen.structure.templatesystem.LiquidSettings;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -50,9 +53,7 @@ public class GenericJigsawStructure extends Structure {
             GenericJigsawStructure.settingsCodec(instance),
             StructureTemplatePool.CODEC.fieldOf("start_pool").forGetter(structure -> structure.startPool),
             Codec.intRange(0, 30).fieldOf("size").forGetter(structure -> structure.size),
-            Codec.INT.optionalFieldOf("min_y_allowed").forGetter(structure -> structure.minYAllowed),
-            Codec.INT.optionalFieldOf("max_y_allowed").forGetter(structure -> structure.maxYAllowed),
-            Codec.intRange(1, 1000).optionalFieldOf("allowed_y_range_from_start").forGetter(structure -> structure.allowedYRangeFromStart),
+            YRangeAllowance.CODEC.optionalFieldOf("y_allowance").forGetter(structure -> structure.yAllowance),
             HeightProvider.CODEC.fieldOf("start_height").forGetter(structure -> structure.startHeight),
             Heightmap.Types.CODEC.optionalFieldOf("project_start_to_heightmap").forGetter(structure -> structure.projectStartToHeightmap),
             Codec.BOOL.fieldOf("cannot_spawn_in_liquid").orElse(false).forGetter(structure -> structure.cannotSpawnInLiquid),
@@ -62,14 +63,13 @@ public class GenericJigsawStructure extends Structure {
             ResourceLocation.CODEC.listOf().fieldOf("pools_that_ignore_boundaries").orElse(new ArrayList<>()).xmap(HashSet::new, ArrayList::new).forGetter(structure -> structure.poolsThatIgnoreBoundaries),
             Codec.intRange(1, 128).optionalFieldOf("max_distance_from_center").forGetter(structure -> structure.maxDistanceFromCenter),
             StringRepresentable.fromEnum(BURYING_TYPE::values).optionalFieldOf("burying_type").forGetter(structure -> structure.buryingType),
-            Codec.BOOL.fieldOf("use_bounding_box_hack").orElse(false).forGetter(structure -> structure.useBoundingBoxHack)
+            Codec.BOOL.fieldOf("use_bounding_box_hack").orElse(false).forGetter(structure -> structure.useBoundingBoxHack),
+            LiquidSettings.CODEC.optionalFieldOf("liquid_settings", JigsawStructure.DEFAULT_LIQUID_SETTINGS).forGetter(structure -> structure.liquidSettings)
     ).apply(instance, GenericJigsawStructure::new));
 
     public final Holder<StructureTemplatePool> startPool;
     public final int size;
-    public final Optional<Integer> minYAllowed;
-    public final Optional<Integer> maxYAllowed;
-    public final Optional<Integer> allowedYRangeFromStart;
+    public final Optional<YRangeAllowance> yAllowance;
     public final HeightProvider startHeight;
     public final Optional<Heightmap.Types> projectStartToHeightmap;
     public final boolean cannotSpawnInLiquid;
@@ -80,13 +80,13 @@ public class GenericJigsawStructure extends Structure {
     public final Optional<Integer> maxDistanceFromCenter;
     public final Optional<BURYING_TYPE> buryingType;
     public final boolean useBoundingBoxHack;
+    public final LiquidSettings liquidSettings;
+
 
     public GenericJigsawStructure(StructureSettings config,
                                   Holder<StructureTemplatePool> startPool,
                                   int size,
-                                  Optional<Integer> minYAllowed,
-                                  Optional<Integer> maxYAllowed,
-                                  Optional<Integer> allowedYRangeFromStart,
+                                  Optional<YRangeAllowance> yAllowance,
                                   HeightProvider startHeight,
                                   Optional<Heightmap.Types> projectStartToHeightmap,
                                   boolean cannotSpawnInLiquid,
@@ -96,14 +96,13 @@ public class GenericJigsawStructure extends Structure {
                                   HashSet<ResourceLocation> poolsThatIgnoreBoundaries,
                                   Optional<Integer> maxDistanceFromCenter,
                                   Optional<BURYING_TYPE> buryingType,
-                                  boolean useBoundingBoxHack)
+                                  boolean useBoundingBoxHack,
+                                  LiquidSettings liquidSettings)
     {
         super(config);
         this.startPool = startPool;
         this.size = size;
-        this.minYAllowed = minYAllowed;
-        this.maxYAllowed = maxYAllowed;
-        this.allowedYRangeFromStart = allowedYRangeFromStart;
+        this.yAllowance = yAllowance;
         this.startHeight = startHeight;
         this.projectStartToHeightmap = projectStartToHeightmap;
         this.cannotSpawnInLiquid = cannotSpawnInLiquid;
@@ -114,10 +113,12 @@ public class GenericJigsawStructure extends Structure {
         this.maxDistanceFromCenter = maxDistanceFromCenter;
         this.buryingType = buryingType;
         this.useBoundingBoxHack = useBoundingBoxHack;
+        this.liquidSettings = liquidSettings;
 
-        if (maxYAllowed.isPresent() && minYAllowed.isPresent() && maxYAllowed.get() < minYAllowed.get()) {
+
+        if (yAllowance.isPresent() && yAllowance.get().maxYAllowed.isPresent() && yAllowance.get().minYAllowed.isPresent() && yAllowance.get().maxYAllowed.get() < yAllowance.get().minYAllowed.get()) {
             throw new RuntimeException("""
-                Moog's End Structures: maxYAllowed cannot be less than minYAllowed.
+                Moog's Voyager Structures: maxYAllowed cannot be less than minYAllowed.
                 Please correct this error as there's no way to spawn this structure properly
                     Structure pool of problematic structure: %s
             """.formatted(startPool.value()));
@@ -157,7 +158,7 @@ public class GenericJigsawStructure extends Structure {
         }
 
         if (this.terrainHeightCheckRadius.isPresent() &&
-            (this.allowedTerrainHeightRange.isPresent() || this.minYAllowed.isPresent()))
+                (this.allowedTerrainHeightRange.isPresent() || (this.yAllowance.isPresent() && this.yAllowance.get().minYAllowed.isPresent())))
         {
             int maxTerrainHeight = Integer.MIN_VALUE;
             int minTerrainHeight = Integer.MAX_VALUE;
@@ -169,18 +170,18 @@ public class GenericJigsawStructure extends Structure {
                     maxTerrainHeight = Math.max(maxTerrainHeight, height);
                     minTerrainHeight = Math.min(minTerrainHeight, height);
 
-                    if (this.minYAllowed.isPresent() && minTerrainHeight < this.minYAllowed.get()) {
+                    if (this.yAllowance.isPresent() && this.yAllowance.get().minYAllowed.isPresent() && minTerrainHeight < this.yAllowance.get().minYAllowed.get()) {
                         return false;
                     }
 
-                    if (this.maxYAllowed.isPresent() && minTerrainHeight > this.maxYAllowed.get()) {
+                    if (this.yAllowance.isPresent() && this.yAllowance.get().maxYAllowed.isPresent() && minTerrainHeight > this.yAllowance.get().maxYAllowed.get()) {
                         return false;
                     }
                 }
             }
 
             if(this.allowedTerrainHeightRange.isPresent() &&
-                maxTerrainHeight - minTerrainHeight > this.allowedTerrainHeightRange.get())
+                    maxTerrainHeight - minTerrainHeight > this.allowedTerrainHeightRange.get())
             {
                 return false;
             }
@@ -200,17 +201,15 @@ public class GenericJigsawStructure extends Structure {
 
         int topClipOff = Integer.MAX_VALUE;
         int bottomClipOff = Integer.MIN_VALUE;
-        if(this.allowedYRangeFromStart.isPresent()) {
-            topClipOff = blockpos.getY() + this.allowedYRangeFromStart.get();
-            bottomClipOff = blockpos.getY() - this.allowedYRangeFromStart.get();
-        }
 
-        if(this.maxYAllowed.isPresent()) {
-            topClipOff = Math.min(topClipOff, this.maxYAllowed.get());
-        }
+        if (this.yAllowance.isPresent()) {
+            if(this.yAllowance.get().maxYAllowed.isPresent()) {
+                topClipOff = Math.min(topClipOff, this.yAllowance.get().maxYAllowed.get());
+            }
 
-        if(this.minYAllowed.isPresent()) {
-            bottomClipOff = Math.max(bottomClipOff, this.minYAllowed.get());
+            if(this.yAllowance.get().minYAllowed.isPresent()) {
+                bottomClipOff = Math.max(bottomClipOff, this.yAllowance.get().minYAllowed.get());
+            }
         }
 
         int finalTopClipOff = topClipOff;
@@ -228,6 +227,7 @@ public class GenericJigsawStructure extends Structure {
                 this.poolsThatIgnoreBoundaries,
                 this.maxDistanceFromCenter,
                 this.buryingType,
+                this.liquidSettings,
                 (structurePiecesBuilder, pieces) -> postLayoutAdjustments(structurePiecesBuilder, context, offsetY, blockpos, finalTopClipOff, finalBottomClipOff, pieces));
     }
 
@@ -272,24 +272,38 @@ public class GenericJigsawStructure extends Structure {
             }
 
             // Offset structure to average land around it
-            OptionalDouble avgHeightOptional = landHeights.stream()
-                    .filter(height -> height > this.minYAllowed.orElse(Integer.MIN_VALUE) && height < this.maxYAllowed.orElse(Integer.MAX_VALUE))
-                    .mapToInt(Integer::intValue).average();
+            int minYAllowed;
+            int maxYAllowed;
 
-            if(this.maxYAllowed.isPresent() && avgHeightOptional.isEmpty()) {
-                avgHeightOptional = OptionalDouble.of(this.maxYAllowed.get());
+            if (this.yAllowance.isPresent()) {
+                minYAllowed = this.yAllowance.get().minYAllowed.orElse(Integer.MIN_VALUE);
+                maxYAllowed = this.yAllowance.get().maxYAllowed.orElse(Integer.MAX_VALUE);
+            }
+            else {
+                maxYAllowed = Integer.MAX_VALUE;
+                minYAllowed = Integer.MIN_VALUE;
             }
 
-            if(this.minYAllowed.isPresent() && avgHeightOptional.isEmpty()) {
-                avgHeightOptional = OptionalDouble.of(this.minYAllowed.get());
+            OptionalDouble avgHeightOptional = landHeights.stream()
+                    .filter(height -> height > minYAllowed && height < maxYAllowed)
+                    .mapToInt(Integer::intValue).average();
+
+            if (this.yAllowance.isPresent()) {
+                if (this.yAllowance.get().maxYAllowed.isPresent() && avgHeightOptional.isEmpty()) {
+                    avgHeightOptional = OptionalDouble.of(this.yAllowance.get().maxYAllowed.get());
+                }
+
+                if (this.yAllowance.get().minYAllowed.isPresent() && avgHeightOptional.isEmpty()) {
+                    avgHeightOptional = OptionalDouble.of(this.yAllowance.get().minYAllowed.get());
+                }
             }
 
             if (avgHeightOptional.isPresent()) {
                 double avgHeight = avgHeightOptional.getAsDouble();
                 if(this.cannotSpawnInLiquid && heightMapToUse != Heightmap.Types.OCEAN_FLOOR_WG && heightMapToUse != Heightmap.Types.OCEAN_FLOOR) {
                     avgHeight = Math.max(avgHeight, context.chunkGenerator().getSeaLevel());
-                    if(this.maxYAllowed.isPresent()) {
-                        avgHeight = Math.max(avgHeight, this.maxYAllowed.get());
+                    if(this.yAllowance.isPresent() && this.yAllowance.get().maxYAllowed.isPresent()) {
+                        avgHeight = Math.max(avgHeight, this.yAllowance.get().maxYAllowed.get());
                     }
                 }
 
@@ -307,6 +321,10 @@ public class GenericJigsawStructure extends Structure {
             BoundingBox box = pieces.get(0).getBoundingBox();
             BlockPos centerPos = box.getCenter();
             int highestLandPos = Integer.MAX_VALUE;
+            Optional<Integer> minYAllowed = Optional.empty();
+            if (this.yAllowance.isPresent()) {
+                minYAllowed = this.yAllowance.get().minYAllowed;
+            }
             highestLandPos = terrainHeight(context, heightMapToUse, box.minX(), centerPos.getZ(), minYAllowed, highestLandPos);
             highestLandPos = terrainHeight(context, heightMapToUse, centerPos.getX(), box.maxZ(), minYAllowed, highestLandPos);
             highestLandPos = terrainHeight(context, heightMapToUse, centerPos.getX(), box.minZ(), minYAllowed, highestLandPos);
@@ -341,12 +359,14 @@ public class GenericJigsawStructure extends Structure {
     }
 
     private void offsetToNewHeight(GenerationContext context, int offsetY, List<PoolElementStructurePiece> pieces, BoundingBox box, int highestLandPos) {
-        if(this.maxYAllowed.isPresent() && (box.maxY() + offsetY) < this.minYAllowed.get()) {
-            highestLandPos = Math.max(highestLandPos, this.maxYAllowed.get());
-        }
+        if (this.yAllowance.isPresent()) {
+            if(this.yAllowance.get().maxYAllowed.isPresent() && (box.maxY() + offsetY) < this.yAllowance.get().minYAllowed.get()) {
+                highestLandPos = Math.max(highestLandPos, this.yAllowance.get().maxYAllowed.get());
+            }
 
-        if(this.minYAllowed.isPresent() && (box.minY() + offsetY) < this.minYAllowed.get()) {
-            highestLandPos = Math.min(highestLandPos, this.minYAllowed.get());
+            if(this.yAllowance.get().minYAllowed.isPresent() && (box.minY() + offsetY) < this.yAllowance.get().minYAllowed.get()) {
+                highestLandPos = Math.min(highestLandPos, this.yAllowance.get().minYAllowed.get());
+            }
         }
 
         WorldgenRandom random = new WorldgenRandom(new LegacyRandomSource(0L));

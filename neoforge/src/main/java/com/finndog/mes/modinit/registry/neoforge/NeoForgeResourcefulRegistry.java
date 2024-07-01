@@ -3,9 +3,9 @@ package com.finndog.mes.modinit.registry.neoforge;
 import com.finndog.mes.modinit.registry.RegistryEntries;
 import com.finndog.mes.modinit.registry.RegistryEntry;
 import com.finndog.mes.modinit.registry.ResourcefulRegistry;
+import com.finndog.mes.neoforge.MESNeoforge;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
-import net.neoforged.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.Collection;
@@ -36,6 +36,6 @@ public class NeoForgeResourcefulRegistry<T> implements ResourcefulRegistry<T> {
 
     @Override
     public void init() {
-        register.register(FMLJavaModLoadingContext.get().getModEventBus());
+        register.register(MESNeoforge.modEventBusTempHolder);
     }
 }

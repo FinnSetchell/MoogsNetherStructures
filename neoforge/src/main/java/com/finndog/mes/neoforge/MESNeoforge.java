@@ -20,10 +20,14 @@ import net.neoforged.neoforge.event.server.ServerStoppingEvent;
 @Mod(MESCommon.MODID)
 public class MESNeoforge {
 
+    public static IEventBus modEventBusTempHolder = null;
+
     public MESNeoforge(IEventBus modEventBus, ModContainer modContainer) {
         modEventBus.addListener(EventPriority.NORMAL, ResourcefulRegistriesImpl::onRegisterForgeRegistries);
 
+        modEventBusTempHolder = modEventBus;
         MESCommon.init();
+        modEventBusTempHolder = null;
 
         modEventBus.addListener(MESNeoforge::onSetup);
 

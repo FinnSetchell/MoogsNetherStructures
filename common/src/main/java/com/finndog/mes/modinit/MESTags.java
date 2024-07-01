@@ -10,6 +10,6 @@ public final class MESTags {
     public static void initTags() {}
 
     public static TagKey<Structure> LARGER_LOCATE_SEARCH = TagKey.create(Registries.STRUCTURE,
-            new ResourceLocation(MESCommon.MODID, "larger_locate_search"));
+            ResourceLocation.fromNamespaceAndPath(MESCommon.MODID, "larger_locate_search"));
 
 }
