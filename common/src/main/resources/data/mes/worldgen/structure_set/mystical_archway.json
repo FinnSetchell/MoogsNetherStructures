@@ -7,9 +7,9 @@
   ],
   "placement": {
     "type": "mes:advanced_random_spread",
-    "salt": 132658584,
-    "spacing": 42,
-    "separation": 36,
+    "salt": 132652584,
+    "spacing": 44,
+    "separation": 32,
     "min_distance_from_world_origin": 1000
   }
 }
