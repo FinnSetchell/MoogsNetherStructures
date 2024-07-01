@@ -4,8 +4,8 @@ issueTrackerURL="https://github.com/FinnSetchell/MoogsEndStructures/issues" #opt
 license="https://github.com/FinnSetchell/MoogsEndStructures/blob/1.20-MultiLoader/LICENSE"
 
 [[mods]]
-    modId="mvs"
-    logoFile= "assets/mvs/icon.png"
+    modId="mes"
+    logoFile= "assets/mes/icon.png"
     logoBlur=false
     version="${version}"
     displayName="Moog's End Structures"
@@ -20,12 +20,12 @@ license="https://github.com/FinnSetchell/MoogsEndStructures/blob/1.20-MultiLoade
     '''
 
 [[mixins]]
-    config = "mvs-neoforge.mixins.json"
+    config = "mes-neoforge.mixins.json"
 
 [[mixins]]
-    config = "mvs-common.mixins.json"
+    config = "mes-common.mixins.json"
 
-[[dependencies.mvs]]
+[[dependencies.mes]]
     modId="minecraft"
     type="required"
     versionRange="[1.20.5,)"
