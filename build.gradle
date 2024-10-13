@@ -46,7 +46,6 @@ allprojects {
                 includeGroup 'dev.cafeteria'
             }
         }
-        maven { url "https://nexus.resourcefulbees.com/repository/telepathicgrunt/" }
         maven { url "https://maven.architectury.dev/" }
         maven { url "https://maven.shedaniel.me" }
         maven { url "https://jitpack.io" }
