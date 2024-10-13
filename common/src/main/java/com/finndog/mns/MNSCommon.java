@@ -4,7 +4,6 @@ import com.finndog.mns.events.lifecycle.RegisterReloadListenerEvent;
 import com.finndog.mns.events.lifecycle.ServerGoingToStartEvent;
 import com.finndog.mns.events.lifecycle.ServerGoingToStopEvent;
 import com.finndog.mns.events.lifecycle.SetupEvent;
-import com.finndog.mns.misc.pooladditions.PoolAdditionMerger;
 import com.finndog.mns.modinit.MNSPlacements;
 import com.finndog.mns.modinit.MNSProcessors;
 import com.finndog.mns.modinit.MNSStructurePieces;
@@ -40,7 +39,6 @@ public class MNSCommon {
     }
 
     private static void serverAboutToStart(final ServerGoingToStartEvent event) {
-        PoolAdditionMerger.mergeAdditionPools(event);
 
         AsyncLocator.handleServerAboutToStartEvent();
     }
