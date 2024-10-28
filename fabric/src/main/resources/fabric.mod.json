@@ -16,7 +16,7 @@
     "environment": "*",
     "entrypoints": {
         "main": [
-            "com.finndog.mns.fabric.MESFabric"
+            "com.finndog.mns.fabric.MNSFabric"
         ]
     },
     "mixins": [
