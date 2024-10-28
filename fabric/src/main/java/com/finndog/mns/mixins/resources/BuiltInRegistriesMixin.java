@@ -1,6 +1,6 @@
 package com.finndog.mns.mixins.resources;
 
-import com.finndog.mns.modinit.MESConditionsRegistry;
+import com.finndog.mns.modinit.MNSConditionsRegistry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -17,6 +17,6 @@ public class BuiltInRegistriesMixin {
     @Inject(method = "<clinit>",
             at = @At(value = "RETURN"))
     private static void mes_initCustomRegistries(CallbackInfo ci) {
-        MESConditionsRegistry.MES_JSON_CONDITIONS_REGISTRY.init();
+        MNSConditionsRegistry.MNS_JSON_CONDITIONS_REGISTRY.init();
     }
 }
