@@ -1,0 +1,14 @@
+{
+  "structures": [
+    {
+      "structure": "mns:grave_yard",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "type": "mns:advanced_random_spread",
+    "salt": 199836475,
+    "spacing": 36,
+    "separation": 22
+  }
+}

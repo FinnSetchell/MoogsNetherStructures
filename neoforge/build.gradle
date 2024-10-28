@@ -42,7 +42,7 @@ remapJar {
     inputFile.set shadowJar.archiveFile
     dependsOn shadowJar
     archiveClassifier.set(null)
-    atAccessWideners.add("mes.accesswidener") // this is a path inside the mod jar
+    atAccessWideners.add("mns.accesswidener") // this is a path inside the mod jar
 }
 
 jar {

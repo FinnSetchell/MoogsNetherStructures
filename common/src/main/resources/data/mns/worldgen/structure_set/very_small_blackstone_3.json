@@ -1,0 +1,14 @@
+{
+  "structures": [
+    {
+      "structure": "mns:very_small_blackstone_3",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "type": "mns:advanced_random_spread",
+    "salt": 128778434,
+    "spacing": 23,
+    "separation": 19
+  }
+}
