@@ -1,0 +1,14 @@
+{
+  "structures": [
+    {
+      "structure": "mns:train",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "type": "mns:advanced_random_spread",
+    "salt": 111029383,
+    "spacing": 65,
+    "separation": 50
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "structures": [
+    {
+      "structure": "mns:sandy_skull",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "type": "mns:advanced_random_spread",
+    "salt": 989766565,
+    "spacing": 40,
+    "separation": 36
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "structures": [
+    {
+      "structure": "mns:leafy_rubble",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "type": "mns:advanced_random_spread",
+    "salt": 885574632,
+    "spacing": 22,
+    "separation": 15
+  }
+}

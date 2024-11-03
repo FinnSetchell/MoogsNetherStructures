@@ -1,0 +1,14 @@
+{
+  "structures": [
+    {
+      "structure": "mns:copper_tower",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "type": "mns:advanced_random_spread",
+    "salt": 887221321,
+    "spacing": 40,
+    "separation": 37
+  }
+}
