@@ -1,0 +1,14 @@
+{
+  "structures": [
+    {
+      "structure": "mns:warped_dome",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "type": "mns:advanced_random_spread",
+    "salt": 839484752,
+    "spacing": 42,
+    "separation": 38
+  }
+}
